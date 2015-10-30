@@ -27,7 +27,7 @@ and open the template in the editor.
   <!-- <div class="ct-chart ct-golden-section" id="chart2"></div> -->
   <script>
     var domain = document.domain;
-    var ws = new WebSocket('wss://' + domain + ':8770');
+    var ws = new WebSocket('ws://' + domain + ':8770');
 
     ws.open = function(event) {
       // ws.send('something');
