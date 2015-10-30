@@ -33,8 +33,6 @@ wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(message) {
     console.log('received: %s', message);
   });
-
-  ws.send('somethinffg');
   var minutes = 2,
 
     the_interval = minutes * 1 * 1000;
@@ -46,37 +44,17 @@ wss.on('connection', function connection(ws) {
   //  if (minutes > 26){
       console.log("success");
       var   data = {
-           labels: [Math.random()*2],
+           labels: [Math.random()*4],
            series: [
-             [Math.random()*1],
+             [Math.random()*6],
              [Math.random()*8],
              [Math.random()*5]
            ]
           }
 
-  var data1 = buidlArr(data1);
-  console.log(data1);
-    //  data.series[0].push(9);
       ws.send(JSON.stringify(data) );
     //}
     console.log(hours);
   }, the_interval);
 
 });
-function buidlArr(data){
-if (data == null){
-  data = {
-     labels: [],
-     series: [
-       [],
-       [],
-       []
-     ]
-    }
-}
-  data.series[0].push(Math.random()*2);
-  data.series[1].push(Math.random()*4);
-  data.series[2].push(Math.random()*5);
-  data.labels.push("ttt");
- return data
-}
