@@ -22,14 +22,13 @@ and open the template in the editor.
 
 <body>
 
-  <div>TODO write ontent</div>
   <div class="ct-chart ct-perfect-fourth"></div>
   <!-- <div class="ct-chart ct-golden-section" id="chart2"></div> -->
   <script>
     var domain = document.domain;
-    var ws = new WebSocket('wss://' + domain + ':8770/');
-    // var host = location.origin.replace(/^http/, 'ws')
-    // var ws = new WebSocket(host);
+    // var ws = new WebSocket('ws://' + domain + ':8770/');
+    var host = location.origin.replace(/^http/, 'ws')
+    var ws = new WebSocket(host);
     ws.open = function(event) {
       // ws.send('something');
     };

@@ -1,21 +1,23 @@
-var express = require('express');
-var app = express();
+// var express = require('express');
+// var app = express();
 
-app.set('port', (process.env.PORT || 5000));
-app.use(express.static(__dirname + '/public'));
+var WebSocketServer = require("ws").Server
+var http = require("http")
+var express = require("express")
+var app = express()
+var port = process.env.PORT || 5000
 
-app.get('/', function(request, response) {
-  response.send('Hello World!');
-});
 
-app.listen(app.get('port'), function() {
-  console.log("Node app is running at localhost:" + app.get('port'));
-});
+app.use(express.static(__dirname + "/public/"))
 
-var WebSocketServer = require('ws').Server,
-  wss = new WebSocketServer({
-    port: 8770
-  });
+var server = http.createServer(app)
+server.listen(port)
+
+console.log("http server listening on %d", port)
+
+var wss = new WebSocketServer({server: server})
+console.log("websocket server created")
+
 var  data = {
    // A labels array that can contain any sort of values
    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
