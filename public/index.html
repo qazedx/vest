@@ -37,11 +37,12 @@ and open the template in the editor.
 
       console.log(event.data);
       message = JSON.parse(event.data);
-    //  data.series[0].push(message.series[0]);
-    //  data.series[1].push(message.series[1]);
-    //  data.series[2].push(message.series[2]);
-    //  console.log(data);
-   draw(message)
+      data.labels.push("ttt");
+      data.series[0].push(message.series[0][0]);
+      data.series[1].push(message.series[1][0]);
+      data.series[2].push(message.series[2][0]);
+       console.log(data);
+      draw(data)
     };
     ws.onclose = function(event) {
       console.log('err');
@@ -56,19 +57,19 @@ and open the template in the editor.
       labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
       // Our series array that contains series objects or in this case series data arrays
       series: [
-        [12, 9, 7, 8, 5,8,9],
-        [2, 1, 3.5, 7, 3,6,4],
-        [1, 3, 4, 5, 6,2,5]
+        [12, 9, 7, 8, 5, 8, 9],
+        [2, 1, 3.5, 7, 3, 6, 4],
+        [1, 3, 4, 5, 6, 2, 5]
       ]
     };
 
     // Create a new line chart object where as first parameter we pass in a selector
     // that is resolving to our chart container element. The Second parameter
     // is the actual data object.
-    function draw(data){
+    function draw(data) {
       new Chartist.Line('.ct-chart', data);
     }
-      new Chartist.Line('.ct-chart', data);
+    new Chartist.Line('.ct-chart', data);
   </script>
 
 </body>

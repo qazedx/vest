@@ -45,6 +45,14 @@ wss.on('connection', function connection(ws) {
     var minutes = objDate.getMinutes();
   //  if (minutes > 26){
       console.log("success");
+      var   data = {
+           labels: [Math.random()*2],
+           series: [
+             [Math.random()*1],
+             [Math.random()*8],
+             [Math.random()*5]
+           ]
+          }
 
   var data1 = buidlArr(data1);
   console.log(data1);
