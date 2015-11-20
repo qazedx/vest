@@ -15,7 +15,7 @@ server.listen(port)
 
 console.log("http server listening on %d", port)
 // post
-
+var debbb;
 
 var bodyParser     =         require("body-parser");
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
@@ -27,6 +27,8 @@ app.post('/',function(req,res){
   var password=req.body.password;
   console.log(req.body.value +" value");
   console.log("User name = "+user_name+", password is "+password);
+  debbb = req.body.value;
+//  ws.send(req.body.value);
   res.end("yes");
 });
 //ws
@@ -68,7 +70,7 @@ wss.on('connection', function connection(ws) {
            ]
           }
 
-    //  ws.send(JSON.stringify(data) );
+     ws.send(JSON.stringify(debbb) );
     //}
     console.log("time: "+ hours+" " +minutes);
   }, the_interval);

@@ -56,18 +56,18 @@ and open the template in the editor.
     ws.onmessage = function(event) {
 
       console.log(event.data);
-      message = JSON.parse(event.data);
-      data.labels.push("|");
-      data.series[0].push(message.series[0][0]);
-      data.series[1].push(message.series[1][0]);
-      data.series[2].push(message.series[2][0]);
-      if (data.labels.length>15){
-        data.labels.splice(0,1);
-        data.series[0].splice(0,1);
-        data.series[1].splice(0,1);
-        data.series[2].splice(0,1);
-      }
-       console.log(data);
+      // message = JSON.parse(event.data);
+      // data.labels.push("|");
+      // data.series[0].push(message.series[0][0]);
+      // data.series[1].push(message.series[1][0]);
+      // data.series[2].push(message.series[2][0]);
+      // if (data.labels.length>15){
+      //   data.labels.splice(0,1);
+      //   data.series[0].splice(0,1);
+      //   data.series[1].splice(0,1);
+      //   data.series[2].splice(0,1);
+      // }
+      //  console.log(data);
   //    draw(data)
     };
     ws.onclose = function(event) {
