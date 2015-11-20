@@ -14,6 +14,22 @@ var server = http.createServer(app)
 server.listen(port)
 
 console.log("http server listening on %d", port)
+// post
+
+
+var bodyParser     =         require("body-parser");
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+}));
+app.post('/',function(req,res){
+  var user_name=req.body.user;
+  var password=req.body.password;
+  console.log(req.body.value +" value");
+  console.log("User name = "+user_name+", password is "+password);
+  res.end("yes");
+});
+//ws
 
 var wss = new WebSocketServer({server: server})
 console.log("websocket server created")
@@ -33,7 +49,7 @@ wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(message) {
     console.log('received: %s', message);
   });
-  var minutes = 2,
+  var minutes = 5,
 
     the_interval = minutes * 1 * 1000;
   setInterval(function () {
@@ -52,9 +68,9 @@ wss.on('connection', function connection(ws) {
            ]
           }
 
-      ws.send(JSON.stringify(data) );
+    //  ws.send(JSON.stringify(data) );
     //}
-    console.log(hours);
+    console.log("time: "+ hours+" " +minutes);
   }, the_interval);
 
 });

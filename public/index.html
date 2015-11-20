@@ -21,8 +21,28 @@ and open the template in the editor.
 </head>
 
 <body>
-
-  <div class="ct-chart ct-perfect-fourth"></div>
+<div class="container">
+    <div class="ct-chart ct-perfect-fourth"></div>
+    <input type="TEXT" id="user" size="40" placeholder="test post">
+    <input type="button" id="submit" value="Submit">
+</div>
+<script>
+  $(document).ready(function() {
+    var user, pass;
+    $("#submit").click(function() {
+      user = $("#user").val();
+      pass = $("#password").val();
+      $.post("/", {
+        user: user,
+        password: pass
+      }, function(data) {
+        if (data === 'done') {
+          alert("login success");
+        }
+      });
+    });
+  });
+</script>
   <!-- <div class="ct-chart ct-golden-section" id="chart2"></div> -->
   <script>
     var domain = document.domain;
@@ -48,7 +68,7 @@ and open the template in the editor.
         data.series[2].splice(0,1);
       }
        console.log(data);
-      draw(data)
+  //    draw(data)
     };
     ws.onclose = function(event) {
       console.log('err');

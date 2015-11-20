@@ -4,23 +4,25 @@
   "description": "A sample Node.js app using Express 4",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "express": "~4.9.x",
-    "ws": "~0.8.0"
+    "ws": "~0.8.0",
+     "body-parser":   "1.14.1"
   },
   "engines": {
     "node": "0.10.x"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/heroku/node-js-getting-started"
+    "url": "https://github.com/qazedx/vest"
   },
   "keywords": [
     "node",
     "heroku",
-    "express"
+    "express",
+    "vest"
   ],
   "license": "MIT"
 }
