@@ -28,6 +28,7 @@ app.post('/',function(req,res){
   console.log(req.body.value +" value");
   console.log("User name = "+user_name+", password is "+password);
   debbb = req.body.value;
+  debbb = user_name;
 //  ws.send(req.body.value);
   res.end("yes");
 });
@@ -36,16 +37,16 @@ app.post('/',function(req,res){
 var wss = new WebSocketServer({server: server})
 console.log("websocket server created")
 
-var  data = {
-   // A labels array that can contain any sort of values
-   labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-   // Our series array that contains series objects or in this case series data arrays
-   series: [
-     [12, 9, 7, 8, 5],
-     [2, 1, 3.5, 7, 3],
-     [1, 3, 4, 5, 6]
-   ]
-  };
+// var  data = {
+//    // A labels array that can contain any sort of values
+//    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+//    // Our series array that contains series objects or in this case series data arrays
+//    series: [
+//      [12, 9, 7, 8, 5],
+//      [2, 1, 3.5, 7, 3],
+//      [1, 3, 4, 5, 6]
+//    ]
+//   };
 
 wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(message) {
@@ -59,19 +60,18 @@ wss.on('connection', function connection(ws) {
     var objDate = new Date();
     var hours = objDate.getHours();
     var minutes = objDate.getMinutes();
-  //  if (minutes > 26){
-      console.log("success");
-      var   data = {
-           labels: [Math.random()*4],
-           series: [
-             [Math.random()*6],
-             [Math.random()*8],
-             [Math.random()*5]
-           ]
-          }
-
+//  if (minutes > 26){
+// console.log("success");
+// var   data = {
+//      labels: [Math.random()*4],
+//      series: [
+//        [Math.random()*6],
+//        [Math.random()*8],
+//        [Math.random()*5]
+//      ]
+//     }
+//}
      ws.send(JSON.stringify(debbb) );
-    //}
     console.log("time: "+ hours+" " +minutes);
   }, the_interval);
 

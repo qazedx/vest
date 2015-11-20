@@ -26,7 +26,9 @@ and open the template in the editor.
     <input type="TEXT" id="user" size="40" placeholder="test post">
     <input type="button" id="submit" value="Submit">
 </div>
-<script>
+
+  <!-- <div class="ct-chart ct-golden-section" id="chart2"></div> -->
+  <script>
   $(document).ready(function() {
     var user, pass;
     $("#submit").click(function() {
@@ -42,9 +44,6 @@ and open the template in the editor.
       });
     });
   });
-</script>
-  <!-- <div class="ct-chart ct-golden-section" id="chart2"></div> -->
-  <script>
     var domain = document.domain;
     // var ws = new WebSocket('ws://' + domain + ':8770/');
     var host = location.origin.replace(/^http/, 'ws')
@@ -68,7 +67,7 @@ and open the template in the editor.
       //   data.series[2].splice(0,1);
       // }
       //  console.log(data);
-  //    draw(data)
+      //     draw(data)
     };
     ws.onclose = function(event) {
       console.log('err');
@@ -98,7 +97,6 @@ and open the template in the editor.
     }
     new Chartist.Line('.ct-chart', data);
   </script>
-
 </body>
 
 </html>
