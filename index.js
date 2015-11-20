@@ -28,7 +28,7 @@ app.post('/',function(req,res){
   console.log(req.body.value +" value");
   console.log("User name = "+user_name+", password is "+password);
   debbb = req.body.value;
-  debbb = user_name;
+  // debbb = user_name;
 //  ws.send(req.body.value);
   res.end("yes");
 });
