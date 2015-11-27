@@ -14,27 +14,48 @@ var server = http.createServer(app)
 server.listen(port)
 
 console.log("http server listening on %d", port)
-// post
+  // post
 var debbb;
 
-var bodyParser     =         require("body-parser");
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+var bodyParser = require("body-parser");
+app.use(bodyParser.json()); // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({ // to support URL-encoded bodies
   extended: true
 }));
-app.post('/',function(req,res){
-  var user_name=req.body.user;
-  var password=req.body.password;
-  console.log(req.body.value +" value");
-  console.log("User name = "+user_name+", password is "+password);
-  debbb = req.body.value;
-  // debbb = user_name;
-//  ws.send(req.body.value);
-  res.end("yes");
+app.post('/linkit-data', function(req, res) {
+  var data = JSON.stringify(req.body)
+  // console.log(req.body.value + " value");
+  console.log("body " + data);
+
+ write2file(data);
+  res.end("received");
 });
+var fs = require('fs');
+
+function write2file(obj){
+  var path = "public/data/data.json";
+  var dataFile = fs.readFileSync(path);
+  var data = JSON.parse(dataFile);
+  data.items.push(obj);
+  var dataJSON = JSON.stringify(data);
+  fs.writeFileSync(path, dataJSON);
+}
+
+// function write2file2(data) {
+//   var fs = require('fs');
+//   fs.writeFile("public/data/data.json", data, function(err) {
+//     if (err) {
+//       return console.log(err);
+//     }
+//
+//     console.log("The file was saved!");
+//   });
+// }
 //ws
 
-var wss = new WebSocketServer({server: server})
+var wss = new WebSocketServer({
+  server: server
+})
 console.log("websocket server created")
 
 // var  data = {
@@ -55,24 +76,24 @@ wss.on('connection', function connection(ws) {
   var minutes = 5,
 
     the_interval = minutes * 1 * 1000;
-  setInterval(function () {
+  setInterval(function() {
     console.log("I am doing my 5 minutes check");
     var objDate = new Date();
     var hours = objDate.getHours();
     var minutes = objDate.getMinutes();
-//  if (minutes > 26){
-// console.log("success");
-// var   data = {
-//      labels: [Math.random()*4],
-//      series: [
-//        [Math.random()*6],
-//        [Math.random()*8],
-//        [Math.random()*5]
-//      ]
-//     }
-//}
-     ws.send(JSON.stringify(debbb) );
-    console.log("time: "+ hours+" " +minutes);
+    //  if (minutes > 26){
+    // console.log("success");
+    // var   data = {
+    //      labels: [Math.random()*4],
+    //      series: [
+    //        [Math.random()*6],
+    //        [Math.random()*8],
+    //        [Math.random()*5]
+    //      ]
+    //     }
+    //}
+    ws.send(JSON.stringify(debbb));
+    console.log("time: " + hours + " " + minutes);
   }, the_interval);
 
 });
