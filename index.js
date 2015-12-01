@@ -47,7 +47,8 @@ function readFile(file) {
   var data = JSON.parse(dataFile);
   console.log(data);
   var dataJSON = JSON.stringify(data);
-  return dataJSON;
+  return data;
+  // return dataJSON;
 }
 
 
@@ -62,9 +63,20 @@ console.log("websocket server created")
 wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(message) {
     console.log('received: %s', message);
+    message = JSON.parse(message);
+    console.log('received: %s', message.type);
+    if (message.type == "requestData") {
+      var dataJSON = readFile("data01");
+      ws.send(JSON.stringify(dataJSON));
+    }
+    if (message.type == "add") {
+      var dataJSON = readFile("data01");
+      dataJSON.type = "add";
+      ws.send(JSON.stringify(dataJSON));
+    }
   });
   var dataJSON = readFile("data01");
-  ws.send(dataJSON);
+  ws.send(JSON.stringify(dataJSON));
 });
 
 
