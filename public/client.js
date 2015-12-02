@@ -1,14 +1,13 @@
-$(document).ready(function() {
+$(document).ready(function () {
   var user, pass;
-  $("#submit").click(function() {
-    user = $("#user").val();
-    pass = $("#password").val();
+  $("#submit").click(function () {
+    user = $("#postTest").val();
     $.post("/", {
       user: user,
       password: pass
-    }, function(data) {
-      if (data === 'done') {
-        alert("login success");
+    }, function (data) {
+      if (data === 'received') {
+        console.log("post success");
       }
     });
   });
@@ -44,25 +43,21 @@ data_ini = {
     []
   ]
 };
-$(".deb").click(function() {
+$(".deb").click(function () {
     console.log("data_ini deb ");
     console.log(data_ini);
     console.log("data_temp deb ");
     console.log(data_temp);
   })
-  // var ws = new WebSocket('ws://' + domain + ':8770/');
+
 var host = location.origin.replace(/^http/, 'ws')
 var ws = new WebSocket(host);
-ws.open = function(event) {
+ws.open = function (event) {
   // ws.send('something');
 };
 
-function requestData(type) {
-  ws.send(JSON.stringify({
-    "type": "requestData"
-  }))
-}
-ws.onmessage = function(event) {
+
+ws.onmessage = function (event) {
   message = JSON.parse(event.data);
   if (message.type == "add") {
     for (var i = 0; i < message.items.length; i++) {
@@ -86,9 +81,9 @@ ws.onmessage = function(event) {
   data_temp = data_ini;
   draw(data_ini);
 };
-ws.onclose = function(event) {
+ws.onclose = function (event) {
   console.log('err');
-  setTimeout(function() {
+  setTimeout(function () {
     location.reload();
   }, 100);
 };
@@ -114,6 +109,10 @@ function zoomChart(type) {
     ws.send(JSON.stringify({
       "type": "add"
     }))
+  }else if (type == "left") {
+    console.log("left");
+  }else if (type == "right") {
+    console.log("right");
   }
   console.log(pos + " " + data_temp.labels.length + " " + data_ini.labels.length);
   console.log("data_temp ");
@@ -122,10 +121,18 @@ function zoomChart(type) {
   console.log(data_ini);
   draw(data_temp);
 }
-
-function draw(data_dr) {
-
-  new Chartist.Line('.ct-chart', data_dr);
-  //  Chartist.scale( 5, 16);
+function requestData(type) {
+  ws.send(JSON.stringify({
+    "type": "requestData"
+  }))
 }
-// new Chartist.Line('.ct-chart', data);
+function draw(data_dr) {
+  var options = {
+    fullWidth: true,
+    chartPadding: {
+      right: 5,
+      left: -5
+    }
+  };
+  new Chartist.Line('.ct-chart', data_dr, options);
+}

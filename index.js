@@ -1,12 +1,8 @@
-// var express = require('express');
-// var app = express();
-
 var WebSocketServer = require("ws").Server
 var http = require("http")
 var express = require("express")
 var app = express()
 var port = process.env.PORT || 5000
-
 
 app.use(express.static(__dirname + "/public/"))
 
@@ -14,7 +10,8 @@ var server = http.createServer(app)
 server.listen(port)
 
 console.log("http server listening on %d", port)
-  // post
+
+// post
 var debbb;
 
 var bodyParser = require("body-parser");
@@ -25,6 +22,13 @@ app.use(bodyParser.urlencoded({ // to support URL-encoded bodies
 app.post('/linkit-data', function (req, res) {
   var data = JSON.stringify(req.body)
     // console.log(req.body.value + " value");
+  console.log("body " + data);
+
+  write2file(data);
+  res.end("received");
+});
+app.post('/', function (req, res) {
+  var data = JSON.stringify(req.body)
   console.log("body " + data);
 
   write2file(data);
@@ -45,7 +49,7 @@ function readFile(file) {
   var path = "public/data/" + file + ".json";
   var dataFile = fs.readFileSync(path);
   var data = JSON.parse(dataFile);
-  console.log(data);
+  // console.log(data);
   var dataJSON = JSON.stringify(data);
   return data;
   // return dataJSON;
@@ -82,6 +86,7 @@ wss.on('connection', function connection(ws) {
 
 
 //// interval thing
+
 // var minutes = 5;
 // the_interval = minutes * 1 * 1000;
 // setInterval(function () {
