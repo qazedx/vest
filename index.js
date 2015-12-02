@@ -69,12 +69,13 @@ wss.on('connection', function connection(ws) {
     console.log('received: %s', message);
     message = JSON.parse(message);
     console.log('received: %s', message.type);
+    var dataJSON;
     if (message.type == "requestData") {
-      var dataJSON = readFile("data01");
+      dataJSON = readFile("data01");
       ws.send(JSON.stringify(dataJSON));
     }
     if (message.type == "add") {
-      var dataJSON = readFile("data01");
+      dataJSON = readFile("data01");
       dataJSON.type = "add";
       ws.send(JSON.stringify(dataJSON));
     }

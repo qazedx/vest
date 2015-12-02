@@ -1,39 +1,28 @@
+// debug
 $(document).ready(function () {
-  var user, pass;
+  var postTest;
   $("#submit").click(function () {
-    user = $("#postTest").val();
+    postTest = $("#postTest").val();
     $.post("/", {
-      user: user,
-      password: pass
+      postTest: postTest
     }, function (data) {
       if (data === 'received') {
-        console.log("post success");
+        console.log(data + ", post success");
       }
     });
   });
+
+  $(".deb").click(function () {
+    console.log("data_chart deb ");
+    console.log(data_chart);
+  })
 });
+// END debug
+
+
 var domain = document.domain;
-// var data = {
-//   labels: [],
-//   series: [
-//     [],
-//     [],
-//     [],
-//     [],
-//     []
-//   ]
-// };
-// // var data_temp = {
-// //   labels: [],
-// //   series: [
-// //     [],
-// //     [],
-// //     [],
-// //     [],
-// //     []
-// //   ]
-// // };
-data_ini = {
+
+data_chart = {
   labels: [],
   series: [
     [],
@@ -43,12 +32,7 @@ data_ini = {
     []
   ]
 };
-$(".deb").click(function () {
-    console.log("data_ini deb ");
-    console.log(data_ini);
-    console.log("data_temp deb ");
-    console.log(data_temp);
-  })
+
 
 var host = location.origin.replace(/^http/, 'ws')
 var ws = new WebSocket(host);
@@ -59,27 +43,27 @@ ws.open = function (event) {
 
 ws.onmessage = function (event) {
   message = JSON.parse(event.data);
+  console.log(event.data);
   if (message.type == "add") {
     for (var i = 0; i < message.items.length; i++) {
-      data_ini.labels.unshift(message.items[i].ti);
-      data_ini.series[0].unshift(message.items[i].t1);
-      data_ini.series[1].unshift(message.items[i].t2);
-      data_ini.series[2].unshift(message.items[i].t3);
-      data_ini.series[3].unshift(message.items[i].t4);
-      data_ini.series[4].unshift(message.items[i].t5);
+      data_chart.labels.unshift(message.items[i].ti);
+      data_chart.series[0].unshift(message.items[i].t1);
+      data_chart.series[1].unshift(message.items[i].t2);
+      data_chart.series[2].unshift(message.items[i].t3);
+      data_chart.series[3].unshift(message.items[i].t4);
+      data_chart.series[4].unshift(message.items[i].t5);
     }
   }
 
   for (var i = 0; i < message.items.length; i++) {
-    data_ini.labels.push(message.items[i].ti);
-    data_ini.series[0].push(message.items[i].t1);
-    data_ini.series[1].push(message.items[i].t2);
-    data_ini.series[2].push(message.items[i].t3);
-    data_ini.series[3].push(message.items[i].t4);
-    data_ini.series[4].push(message.items[i].t5);
+    data_chart.labels.push(message.items[i].ti);
+    data_chart.series[0].push(message.items[i].t1);
+    data_chart.series[1].push(message.items[i].t2);
+    data_chart.series[2].push(message.items[i].t3);
+    data_chart.series[3].push(message.items[i].t4);
+    data_chart.series[4].push(message.items[i].t5);
   }
-  data_temp = data_ini;
-  draw(data_ini);
+  draw(data_chart);
 };
 ws.onclose = function (event) {
   console.log('err');
@@ -93,39 +77,41 @@ ws.onclose = function (event) {
 function zoomChart(type) {
 
   if (type == "in") {
-    for (var i = 0; i < data_temp.series.length; i++) {
-      data_temp.series[i].shift();
+    for (var i = 0; i < data_chart.series.length; i++) {
+      data_chart.series[i].shift();
     }
-    data_temp.labels.shift();
+    data_chart.labels.shift();
   } else if (type == "out") {
-    var lab_len_ini = data_ini.labels.length;
-    var lab_len = data_temp.labels.length;
+    var lab_len_ini = data_chart.labels.length;
+    var lab_len = data_chart.labels.length;
     var pos = lab_len_ini - lab_len;
     // for (var i = 0; i < data.series.length; i++) {
-    //   data_temp.series.unshift(data.series[pos]);
+    //   data_chart.series.unshift(data.series[pos]);
     // }
     //
-    // data_temp.labels.unshift(data.labels[pos]);
+    // data_chart.labels.unshift(data.labels[pos]);
     ws.send(JSON.stringify({
       "type": "add"
     }))
-  }else if (type == "left") {
+  } else if (type == "left") {
     console.log("left");
-  }else if (type == "right") {
+  } else if (type == "right") {
     console.log("right");
   }
-  console.log(pos + " " + data_temp.labels.length + " " + data_ini.labels.length);
-  console.log("data_temp ");
-  console.log(data_temp);
-  console.log("data_ini ");
-  console.log(data_ini);
-  draw(data_temp);
+  console.log(pos + " " + data_chart.labels.length + " " + data_chart.labels.length);
+  console.log("data_chart ");
+  console.log(data_chart);
+  console.log("data_chart ");
+  console.log(data_chart);
+  draw(data_chart);
 }
+
 function requestData(type) {
   ws.send(JSON.stringify({
     "type": "requestData"
   }))
 }
+
 function draw(data_dr) {
   var options = {
     fullWidth: true,
