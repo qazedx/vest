@@ -121,7 +121,6 @@ function zoomChart(type) {
         pos_left--;
       }
     }
-
   }
   console.log(pos_left);
   draw(data_chart);
