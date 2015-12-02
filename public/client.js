@@ -53,16 +53,18 @@ ws.onmessage = function (event) {
       data_chart.series[3].unshift(message.items[i].t4);
       data_chart.series[4].unshift(message.items[i].t5);
     }
+  }else{
+    for (var i = 0; i < message.items.length; i++) {
+      data_chart.labels.push(message.items[i].ti);
+      data_chart.series[0].push(message.items[i].t1);
+      data_chart.series[1].push(message.items[i].t2);
+      data_chart.series[2].push(message.items[i].t3);
+      data_chart.series[3].push(message.items[i].t4);
+      data_chart.series[4].push(message.items[i].t5);
+    }
   }
 
-  for (var i = 0; i < message.items.length; i++) {
-    data_chart.labels.push(message.items[i].ti);
-    data_chart.series[0].push(message.items[i].t1);
-    data_chart.series[1].push(message.items[i].t2);
-    data_chart.series[2].push(message.items[i].t3);
-    data_chart.series[3].push(message.items[i].t4);
-    data_chart.series[4].push(message.items[i].t5);
-  }
+
   draw(data_chart);
 };
 ws.onclose = function (event) {
@@ -91,12 +93,16 @@ function zoomChart(type) {
     //
     // data_chart.labels.unshift(data.labels[pos]);
     ws.send(JSON.stringify({
-      "type": "add"
+      "type": "add",
+      "range": 1,
+      "range_now": data_chart.series[0].length
     }))
   } else if (type == "left") {
     console.log("left");
   } else if (type == "right") {
     console.log("right");
+
+
   }
   console.log(pos + " " + data_chart.labels.length + " " + data_chart.labels.length);
   console.log("data_chart ");
