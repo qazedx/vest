@@ -85,8 +85,6 @@ wss.on('connection', function connection(ws) {
       for (var i = 0; i < message.range; i++) {
         dataJSON_add.items.push(dataJSON.items[data_leng - message.range_now - i])
       }
-
-
       ws.send(JSON.stringify(dataJSON_add));
 
     } else if (message.type == "add_left") {
@@ -96,10 +94,9 @@ wss.on('connection', function connection(ws) {
       };
       var data_leng = dataJSON.items.length;
       for (var i = 0; i < message.range; i++) {
-          dataJSON_add.items.push(dataJSON.items[data_leng - message.pos_left + i])
-
+        dataJSON_add.items.push(dataJSON.items[data_leng - message.pos_left + i])
       }
-        ws.send(JSON.stringify(dataJSON_add));
+      ws.send(JSON.stringify(dataJSON_add));
     }
   });
   var dataJSON = readFile("data01");

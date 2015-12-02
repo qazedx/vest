@@ -44,23 +44,25 @@ ws.open = function (event) {
 ws.onmessage = function (event) {
   message = JSON.parse(event.data);
   // console.log(event.data);
-  if (message.type == "add") {
-    for (var i = 0; i < message.items.length; i++) {
-      data_chart.labels.unshift(message.items[i].ti);
-      data_chart.series[0].unshift(message.items[i].t1);
-      data_chart.series[1].unshift(message.items[i].t2);
-      data_chart.series[2].unshift(message.items[i].t3);
-      data_chart.series[3].unshift(message.items[i].t4);
-      data_chart.series[4].unshift(message.items[i].t5);
-    }
-  } else {
-    for (var i = 0; i < message.items.length; i++) {
-      data_chart.labels.push(message.items[i].ti);
-      data_chart.series[0].push(message.items[i].t1);
-      data_chart.series[1].push(message.items[i].t2);
-      data_chart.series[2].push(message.items[i].t3);
-      data_chart.series[3].push(message.items[i].t4);
-      data_chart.series[4].push(message.items[i].t5);
+  if (message.items[0].ti) {
+    if (message.type == "add") {
+      for (var i = 0; i < message.items.length; i++) {
+        data_chart.labels.unshift(message.items[i].ti);
+        data_chart.series[0].unshift(message.items[i].t1);
+        data_chart.series[1].unshift(message.items[i].t2);
+        data_chart.series[2].unshift(message.items[i].t3);
+        data_chart.series[3].unshift(message.items[i].t4);
+        data_chart.series[4].unshift(message.items[i].t5);
+      }
+    } else {
+      for (var i = 0; i < message.items.length; i++) {
+        data_chart.labels.push(message.items[i].ti);
+        data_chart.series[0].push(message.items[i].t1);
+        data_chart.series[1].push(message.items[i].t2);
+        data_chart.series[2].push(message.items[i].t3);
+        data_chart.series[3].push(message.items[i].t4);
+        data_chart.series[4].push(message.items[i].t5);
+      }
     }
   }
 
@@ -107,15 +109,15 @@ function zoomChart(type) {
     }
   } else if (type == "right") {
     console.log("right");
-    ws.send(JSON.stringify({
-      "type": "add_left",
-      "range": range,
-      "range_now": data_chart.series[0].length,
-      "pos_left": pos_left
-    }))
-    if (pos_left >= 0) {
-      for (var i = 0; i < range; i++) {
+    if (pos_left > 0) {
+      ws.send(JSON.stringify({
+        "type": "add_left",
+        "range": range,
+        "range_now": data_chart.series[0].length,
+        "pos_left": pos_left
+      }))
 
+      for (var i = 0; i < range; i++) {
         pos_left--;
       }
     }
