@@ -63,7 +63,7 @@ var wss = new WebSocketServer({
 })
 console.log("websocket server created")
 
-
+var file2read = "data01"
 wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(message) {
     console.log('received: %s', message);
@@ -71,22 +71,35 @@ wss.on('connection', function connection(ws) {
     console.log('received: %s', message.type);
     var dataJSON;
     if (message.type == "requestData") {
-      dataJSON = readFile("data01");
+      dataJSON = readFile(file2read);
       ws.send(JSON.stringify(dataJSON));
-    }
-    if (message.type == "add") {
+    } else if (message.type == "add") {
 
-      dataJSON = readFile("data01");
+      dataJSON = readFile(file2read);
       dataJSON.type = "add";
-      var dataJSON_add = {"type":"add","items":[]};
+      var dataJSON_add = {
+        "type": "add",
+        "items": []
+      };
       var data_leng = dataJSON.items.length;
       for (var i = 0; i < message.range; i++) {
-        dataJSON_add.items.push(dataJSON.items[data_leng-message.range_now-i])
+        dataJSON_add.items.push(dataJSON.items[data_leng - message.range_now - i])
       }
 
 
       ws.send(JSON.stringify(dataJSON_add));
 
+    } else if (message.type == "add_left") {
+      dataJSON = readFile(file2read);
+      var dataJSON_add = {
+        "items": []
+      };
+      var data_leng = dataJSON.items.length;
+      for (var i = 0; i < message.range; i++) {
+          dataJSON_add.items.push(dataJSON.items[data_leng - message.pos_left + i])
+
+      }
+        ws.send(JSON.stringify(dataJSON_add));
     }
   });
   var dataJSON = readFile("data01");

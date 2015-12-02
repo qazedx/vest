@@ -43,7 +43,7 @@ ws.open = function (event) {
 
 ws.onmessage = function (event) {
   message = JSON.parse(event.data);
-  console.log(event.data);
+  // console.log(event.data);
   if (message.type == "add") {
     for (var i = 0; i < message.items.length; i++) {
       data_chart.labels.unshift(message.items[i].ti);
@@ -53,7 +53,7 @@ ws.onmessage = function (event) {
       data_chart.series[3].unshift(message.items[i].t4);
       data_chart.series[4].unshift(message.items[i].t5);
     }
-  }else{
+  } else {
     for (var i = 0; i < message.items.length; i++) {
       data_chart.labels.push(message.items[i].ti);
       data_chart.series[0].push(message.items[i].t1);
@@ -74,41 +74,54 @@ ws.onclose = function (event) {
   }, 100);
 };
 //ws end
-
+var pos_left = 0;
+var range = 1;
 
 function zoomChart(type) {
 
   if (type == "in") {
-    for (var i = 0; i < data_chart.series.length; i++) {
-      data_chart.series[i].shift();
+    for (var i = 0; i < range; i++) {
+      for (var i = 0; i < data_chart.series.length; i++) {
+        data_chart.series[i].shift();
+      }
+      data_chart.labels.shift();
     }
-    data_chart.labels.shift();
   } else if (type == "out") {
     var lab_len_ini = data_chart.labels.length;
     var lab_len = data_chart.labels.length;
     var pos = lab_len_ini - lab_len;
-    // for (var i = 0; i < data.series.length; i++) {
-    //   data_chart.series.unshift(data.series[pos]);
-    // }
-    //
-    // data_chart.labels.unshift(data.labels[pos]);
     ws.send(JSON.stringify({
       "type": "add",
-      "range": 1,
+      "range": range,
       "range_now": data_chart.series[0].length
     }))
   } else if (type == "left") {
     console.log("left");
+    for (var i = 0; i < range; i++) {
+
+      for (var i = 0; i < data_chart.series.length; i++) {
+        data_chart.series[i].pop();
+      }
+      data_chart.labels.pop();
+      pos_left++;
+    }
   } else if (type == "right") {
     console.log("right");
+    ws.send(JSON.stringify({
+      "type": "add_left",
+      "range": range,
+      "range_now": data_chart.series[0].length,
+      "pos_left": pos_left
+    }))
+    if (pos_left >= 0) {
+      for (var i = 0; i < range; i++) {
 
+        pos_left--;
+      }
+    }
 
   }
-  console.log(pos + " " + data_chart.labels.length + " " + data_chart.labels.length);
-  console.log("data_chart ");
-  console.log(data_chart);
-  console.log("data_chart ");
-  console.log(data_chart);
+  console.log(pos_left);
   draw(data_chart);
 }
 
