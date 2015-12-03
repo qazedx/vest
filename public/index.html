@@ -39,6 +39,21 @@ and open the template in the editor.
 
       </div>
       <div class="center-block form-group  ">
+        <span onclick="zoomChartOpt('low')" class="glyphicon glyphicon-minus btn btn-default btn-lg"></span>
+        <span onclick="zoomChartOpt('high')" class="glyphicon glyphicon-plus btn btn-default btn-lg"></span>
+      </div>
+      <div class="center-block">
+        <span onclick="zoomChartOpt('left')" class="glyphicon glyphicon-arrow-left btn btn-default btn-lg"></span>
+        <span onclick="zoomChartOpt('right')" class="glyphicon glyphicon-arrow-right btn btn-default btn-lg"></span>
+      </div>
+    </div>
+    <div class="pull-right hidden ">
+      <div class=" form-group  ">
+        <span onclick="requestData()" class="glyphicon glyphicon-refresh btn btn-block btn-default btn-lg "></span>
+        <span onclick="location.reload()" class="glyphicon glyphicon-refresh btn btn-block btn-default btn-lg hidden"></span>
+
+      </div>
+      <div class="center-block form-group  ">
         <span onclick="zoomChart('out')" class="glyphicon glyphicon-minus btn btn-default btn-lg"></span>
         <span onclick="zoomChart('in')" class="glyphicon glyphicon-plus btn btn-default btn-lg"></span>
       </div>

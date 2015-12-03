@@ -125,6 +125,27 @@ function zoomChart(type) {
   console.log(pos_left);
   draw(data_chart);
 }
+var low = 0;
+var high = 0;
+
+function zoomChartOpt(type) {
+  if (type == "low") {
+    low--;
+    high--;
+  } else if (type == "high") {
+    low++;
+    high++;
+  } else if (type == "left") {
+    low++;
+    // high--;
+  } else if (type == "right") {
+    // low--;
+    high++;
+  } else {
+    console.log("unknown zoom call");
+  }
+  draw();
+}
 
 function requestData(type) {
   ws.send(JSON.stringify({
@@ -132,13 +153,37 @@ function requestData(type) {
   }))
 }
 
-function draw(data_dr) {
+function draw() {
+  var data = {
+  series: [[
+    {x: "1", y: 100},
+    {x: "2", y: 50},
+    {x: "3", y: 25},
+    {x: "5", y: 12.5},
+    {x: "8", y: 6.25}
+  ],[
+    {x: "1", y: 70},
+    {x: "2", y: 50},
+    {x: "3", y: 65},
+    {x: "5", y: 82.5},
+    {x: "8", y: 6.25}
+  ]]
+};
+
+  console.log("low- "+low+" high- "+high);
   var options = {
     fullWidth: true,
+    axisX: {
+      type: Chartist.AutoScaleAxis,
+      onlyInteger: false,
+      high: high,
+      low: low
+    },
     chartPadding: {
       right: 5,
       left: -5
     }
   };
-  new Chartist.Line('.ct-chart', data_dr, options);
+  // new Chartist.Line('.ct-chart', data_chart, options);
+  new Chartist.Line('.ct-chart', data, options);
 }
