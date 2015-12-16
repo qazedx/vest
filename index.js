@@ -135,8 +135,10 @@ wss.on('connection', function connection(ws) {
       ws.send(JSON.stringify(dataJSON_add));
     }
   });
-  var dataJSON = readFile("data01");
+  // var dataJSON = readFile("data01");
+  var dataJSON = readFile(fileNameF("fileName2read"));
   ws.send(JSON.stringify(dataJSON));
+
 });
 
 

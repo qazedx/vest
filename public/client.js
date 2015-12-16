@@ -1,18 +1,18 @@
 // debug
-$(document).ready(function () {
+$(document).ready(function() {
   var postTest;
-  $("#submit").click(function () {
+  $("#submit").click(function() {
     postTest = $("#postTest").val();
     $.post("/", {
       postTest: postTest
-    }, function (data) {
+    }, function(data) {
       if (data === 'received') {
         console.log(data + ", post success");
       }
     });
   });
 
-  $(".deb").click(function () {
+  $(".deb").click(function() {
     console.log("data_chart deb ");
     console.log(data_chart);
   })
@@ -36,14 +36,14 @@ data_chart = {
 
 var host = location.origin.replace(/^http/, 'ws')
 var ws = new WebSocket(host);
-ws.open = function (event) {
+ws.open = function(event) {
   // ws.send('something');
 };
 
 
-ws.onmessage = function (event) {
+ws.onmessage = function(event) {
   message = JSON.parse(event.data);
-  // console.log(event.data);
+  console.log(event.data);
   if (message.items[0].ti) {
     if (message.type == "add") {
       for (var i = 0; i < message.items.length; i++) {
@@ -69,9 +69,9 @@ ws.onmessage = function (event) {
 
   draw(data_chart);
 };
-ws.onclose = function (event) {
+ws.onclose = function(event) {
   console.log('err');
-  setTimeout(function () {
+  setTimeout(function() {
     location.reload();
   }, 100);
 };
@@ -133,12 +133,65 @@ function requestData(type) {
 }
 
 function draw(data_dr) {
+  // var options = {
+  //   fullWidth: true,
+  //   chartPadding: {
+  //     right: 5,
+  //     left: -5
+  //   }
+  // };
+  // new Chartist.Line('.ct-chart', data_dr, options);
+}
+
+
+
+////////// Gcharts
+
+
+
+google.load('visualization', '1', {
+  packages: ['corechart', 'line']
+});
+google.setOnLoadCallback(drawBasic);
+
+function drawBasic() {
+
+  var data = new google.visualization.DataTable();
+  data.addColumn('timeofday', 'Time of Day');
+  data.addColumn('number', 't1');
+  data.addColumn('number', 't2');
+
+  data.addRows([
+    [[8, 30, 45], 5,5],
+        [[9, 0, 0], 10,5],
+        [[10, 0, 0, 0], 12,5],
+        [[10, 45, 0, 0], 13,55],
+        [[11, 0, 0, 0], 15,5],
+        [[12, 15, 45, 0], 20,55],
+        [[13, 0, 0, 0], 22,5],
+        [[14, 30, 0, 0], 25,55],
+        [[15, 12, 0, 0], 30,5],
+        [[16, 45, 0], 32,25],
+        [[16, 59, 0], 42,5]
+  ]);
+
   var options = {
-    fullWidth: true,
-    chartPadding: {
-      right: 5,
-      left: -5
+    hAxis: {
+      title: 'Time'
+    },
+    vAxis: {
+      title: 'Temperature'
+    },
+    legend: {
+      position: 'none'
+    },
+    explorer: {
+      keepInBounds: true,
+      axis: 'horizontal'
     }
   };
-  new Chartist.Line('.ct-chart', data_dr, options);
+
+  var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+
+  chart.draw(data, options);
 }

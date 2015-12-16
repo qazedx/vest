@@ -17,13 +17,17 @@ and open the template in the editor.
   <link rel="stylesheet" href="bower_components/chartist/dist/chartist.min.css">
   <script src="lib/bs/js/bootstrap.min.js" type="text/javascript"></script>
   <script src="bower_components/chartist/dist/chartist.min.js"></script>
-
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <!-- // <script type="text/javascript" src="data/data0.json"></script> -->
   <link href="style.css" rel="stylesheet" type="text/css"/>
 </head>
 
 <body>
-  <div class="">
+<div class="gcharts">
+  <div id="chart_div"></div>
+</div>
+
+  <div class="chartist-charts">
     <div class="ct-chart ct-perfect-fourth"></div>
     <div class="post-test form-group col-xs-5 pull-left">
       <input type="TEXT" id="postTest" size="10" placeholder="test post">
